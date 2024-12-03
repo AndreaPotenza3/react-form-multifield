@@ -7,23 +7,35 @@ function Main() {
 
     const [newPosts, setNewPosts] = useState(posts)
     const [newTitle, setTitle] = useState('')
+    const initialFormData = {
+        id: Date.now(),
+        title: '',
+        image: undefined /* compila questo campo */,
+        content: '',
+        tags: [],
+        published: true
+    }
+    const [formData, setFormData] = useState(initialFormData)
 
+    function handleFormData(e) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+
+    }
     function addPost(e) {
         e.preventDefault()
 
         const newPost = {
             id: Date.now(),
-            title: newTitle,
-            image: undefined /* compila questo campo */,
-            content: '',
-            tags: [],
-            published: true,
+            ...formData
         }
 
-        if (newTitle === '') return
+        if (formData.title === '') return
 
         setNewPosts([...newPosts, newPost])
-        setTitle('')
+        setFormData(initialFormData)
 
         console.log({ newPost })
     }
@@ -43,11 +55,7 @@ function Main() {
         });
     });
 
-    const [formData, setFormData] = useState(posts)
 
-    function handleFormData(e) {
-        console.log(e.target.title)
-    }
 
 
     return (
